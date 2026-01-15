@@ -1,0 +1,88 @@
+/* 
+   1. GLOBAL RESET & BOX MODEL INHERITANCE 
+   ΡΥΘΜΙΣΗ ΚΑΘΟΛΙΚΟΥ RESET & ΚΛΗΡΟΝΟΜΙΚΟΤΗΤΑΣ
+   
+   Setting border-box on the root to ensure padding doesn't affect width.
+   Ορισμός του border-box στη ρίζα ώστε το padding να μην επηρεάζει το πλάτος.
+*/
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    /* Elements inherit box-sizing from their parents - Κληρονομικότητα από τους γονείς */
+    box-sizing: inherit; 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #111; /* Dark cinematic background - Σκοτεινό κινηματογραφικό φόντο */
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Prevent scrollbars - Αποφυγή εμφάνισης μπαρών κύλισης */
+}
+
+/* 
+   2. 3D SCENE CONFIGURATION (THE STAGE)
+   ΡΥΘΜΙΣΗ ΤΡΙΣΔΙΑΣΤΑΤΗΣ ΣΚΗΝΗΣ
+   
+   Perspective defines the viewer's distance from the Z=0 plane.
+   Η ιδιότητα perspective ορίζει την απόσταση του θεατή από το επίπεδο Ζ=0.
+*/
+.container {
+    width: 100%;
+    height: 100%;
+    perspective: 500px; /* Lower value = stronger 3D effect - Μικρότερη τιμή = πιο έντονο 3D */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 
+   3. LIGHT COMPONENT (THE MOVING OBJECT)
+   ΤΟ ΣΤΟΙΧΕΙΟ ΤΟΥ ΦΩΤΟΣ (ΤΟ ΚΙΝΟΥΜΕΝΟ ΑΝΤΙΚΕΙΜΕΝΟ)
+*/
+.light {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 221, 0, 0.6); 
+    border-radius: 50%;
+    
+    /* Filters to simulate light glow - Φίλτρα για την προσομοίωση λάμψης φωτός */
+    filter: blur(15px); 
+    box-shadow: 0 0 30px #ffde6b; 
+            
+    /* Initial 3D position deep in the screen - Αρχική θέση βαθιά μέσα στην οθόνη */
+    transform: translateZ(-1000px);
+            
+    /* Animation call: 4s duration, linear timing - Κλήση κίνησης: 4δευτ. διάρκεια, σταθερή ταχύτητα */
+    animation: moveLight 4s linear infinite;
+}
+
+/* 
+   4. ANIMATION LOGIC (Z-AXIS MOTION)
+   ΛΟΓΙΚΗ ΚΙΝΗΣΗΣ (ΚΙΝΗΣΗ ΣΤΟΝ ΑΞΟΝΑ Ζ)
+*/
+@keyframes moveLight {
+    0% {
+        /* Starts far away and invisible - Ξεκινά από μακριά και αόρατο */
+        transform: translateZ(-1000px);
+        opacity: 0; 
+        width: 10px; 
+        height: 10px;
+    }
+    30% {
+        /* Becomes visible as it approaches - Γίνεται ορατό καθώς πλησιάζει */
+        opacity: 1;
+    }
+    100% {
+        /* Passes the viewer and fades out - Προσπερνά τον θεατή και σβήνει */
+        transform: translateZ(500px);
+        opacity: 0; 
+        width: 200px; 
+        height: 200px; 
+    }
+}
